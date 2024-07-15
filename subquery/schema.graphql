@@ -1,0 +1,46 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+type Created @entity {
+  id: ID! # Transaction hash
+  orderId: BigInt!
+  packageDescription: String!
+  customer: String!
+  price: BigInt!
+  contractAddress: String!
+  blockHeight: BigInt!
+}
+
+type Delivered @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  orderId: BigInt!
+  contractAddress: String!
+}
+
+type PickedUp @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt
+  orderId: BigInt!
+  courier: String!
+  contractAddress: String!
+}
+
+type Order @entity {
+  id: ID! # Order ID
+  packageDescription: String!
+  customer: String!
+  courier: String
+  distance: BigInt!
+  status: String!
+  price: BigInt!
+  blockHeight: BigInt!
+}
+
+type Query {
+  createdEvents(first: Int, skip: Int): [Created!]!
+  deliveredEvents(first: Int, skip: Int): [Delivered!]!
+  pickedUpEvents(first: Int, skip: Int): [PickedUp!]!
+  orders(first: Int, skip: Int): [Order!]!
+}
