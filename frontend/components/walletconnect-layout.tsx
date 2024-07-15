@@ -6,11 +6,12 @@ import { injected } from "wagmi/connectors";
 
 const WalletConnectLayout = ({ children }: { children: ReactNode }) => {
   const { isConnected, isDisconnected } = useAccount();
+  // Extract the connect function from the useConnect hook
   const { connect } = useConnect();
 
   useEffect(() => {
     if (!isConnected) {
-      if (window.ethereum) {
+      if (window.ethereum && window.ethereum.isMiniPay) {
         connectMyWallet();
       }
     }
